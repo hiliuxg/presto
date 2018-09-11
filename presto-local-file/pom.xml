@@ -10,6 +10,7 @@
 
     <artifactId>presto-local-file</artifactId>
     <description>Presto - Local File Connector</description>
+
     <packaging>presto-plugin</packaging>
 
     <properties>
