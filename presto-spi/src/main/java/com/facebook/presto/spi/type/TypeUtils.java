@@ -103,4 +103,67 @@ public final class TypeUtils
             throw new PrestoException(NOT_SUPPORTED, errorMsg);
         }
     }
+
+    /**
+     * if the type is Numeric
+     * @param type
+     * @return
+     */
+    public static boolean isNumeric(Type type)
+    {
+        return     type instanceof TinyintType
+                || type instanceof SmallintType
+                || type instanceof IntegerType
+                || type instanceof BigintType
+                || type instanceof RealType
+                || type instanceof DoubleType
+                || type instanceof DecimalType;
+    }
+
+    /**
+     * for implicit conversions
+     * @param type
+     * @return
+     */
+    public static int order(Type type) {
+
+        if (type == null) {
+            return 0;
+        }
+
+        if (type instanceof TinyintType) { // 8-bit
+            return 1;
+        }
+
+        if (type instanceof SmallintType) { // 16-bit
+            return 2;
+        }
+
+        if (type instanceof IntegerType) { // 32-bit
+            return 3;
+        }
+
+        if (type instanceof BigintType) { // 64-bit
+            return 4;
+        }
+
+        if (type instanceof RealType) { // 64-bit
+            return 5;
+        }
+
+        if (type instanceof DoubleType) { // float 64-bit
+            return 6;
+        }
+
+        if (type instanceof DecimalType) { // decimal
+            return 7;
+        }
+
+        if (type instanceof VarcharType) { //
+            return 8;
+        }
+
+        throw new IllegalArgumentException("Can't find Type: " + type);
+    }
+
 }

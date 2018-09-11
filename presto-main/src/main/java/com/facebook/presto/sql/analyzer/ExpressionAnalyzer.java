@@ -25,14 +25,7 @@ import com.facebook.presto.security.DenyAllAccessControl;
 import com.facebook.presto.spi.PrestoException;
 import com.facebook.presto.spi.StandardErrorCode;
 import com.facebook.presto.spi.function.OperatorType;
-import com.facebook.presto.spi.type.CharType;
-import com.facebook.presto.spi.type.DecimalParseResult;
-import com.facebook.presto.spi.type.Decimals;
-import com.facebook.presto.spi.type.RowType;
-import com.facebook.presto.spi.type.Type;
-import com.facebook.presto.spi.type.TypeManager;
-import com.facebook.presto.spi.type.TypeSignatureParameter;
-import com.facebook.presto.spi.type.VarcharType;
+import com.facebook.presto.spi.type.*;
 import com.facebook.presto.sql.parser.SqlParser;
 import com.facebook.presto.sql.planner.Symbol;
 import com.facebook.presto.sql.planner.TypeProvider;
@@ -481,6 +474,25 @@ public class ExpressionAnalyzer
         protected Type visitComparisonExpression(ComparisonExpression node, StackableAstVisitorContext<Context> context)
         {
             OperatorType operatorType = OperatorType.valueOf(node.getOperator().name());
+
+            Type left = process(node.getLeft(),context);
+            Type right = process(node.getRight(),context);
+
+            if (left.getClass() != right.getClass() && (TypeUtils.isNumeric(left) || TypeUtils.isNumeric(right))){
+
+                Cast cast ;
+                if (TypeUtils.order(left) < TypeUtils.order(right)){
+                    cast = new Cast(node.getLeft(), right.getDisplayName());
+                    node.setLeft(cast);
+                }else{
+                    cast = new Cast(node.getRight(), left.getDisplayName());
+                    node.setRight(cast);
+                }
+
+                process(cast, context);
+
+            }
+
             return getOperator(context, node, operatorType, node.getLeft(), node.getRight());
         }
 
