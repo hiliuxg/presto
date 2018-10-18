@@ -122,6 +122,7 @@
         <module>presto-memory-context</module>
         <module>presto-proxy</module>
         <module>presto-kudu</module>
+        <module>presto-elasticsearch</module>
     </modules>
 
     <dependencyManagement>
