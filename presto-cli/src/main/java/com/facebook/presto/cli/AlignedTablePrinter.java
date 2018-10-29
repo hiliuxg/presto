@@ -92,13 +92,13 @@ public class AlignedTablePrinter
             }
             writer.append('\n');
 
-            for (int i = 0; i < columns; i++) {
+            /*for (int i = 0; i < columns; i++) {
                 if (i > 0) {
                     writer.append('+');
                 }
                 writer.append(repeat("-", maxWidth[i] + 2));
             }
-            writer.append('\n');
+            writer.append('\n');*/
         }
 
         for (List<?> row : rows) {

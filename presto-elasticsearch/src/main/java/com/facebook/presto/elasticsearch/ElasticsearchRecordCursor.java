@@ -189,23 +189,19 @@ public class ElasticsearchRecordCursor
         long now = System.currentTimeMillis();
         ImmutableList.Builder<SearchHit> result = ImmutableList.builder();
         SearchResponse response = queryBuilder.buildScrollSearchRequest().execute().actionGet(timeout.toMillis());
-        log.info("totalhits->" + response.getHits().getTotalHits());
         if (response.getHits().getTotalHits() > maxHits) {
             throw new PrestoException(ELASTIC_SEARCH_EXCEEDS_MAX_HIT_ERROR, "The number of hits for the query: " + response.getHits().getTotalHits() + " exceeds the configured max hits: " + maxHits);
         }
-
         while (true) {
             for (SearchHit hit : response.getHits().getHits()) {
                 result.add(hit);
             }
-            long now2 = System.currentTimeMillis();
             response = queryBuilder.prepareSearchScroll(response.getScrollId()).execute().actionGet(timeout.toMillis());
-            log.info("spend time2 ->" + (System.currentTimeMillis()-now2)/1000.00);
             if (response.getHits().getHits().length == 0) {
                 break;
             }
         }
-        log.info("spend time ->" + (System.currentTimeMillis()-now)/1000.00);
+        log.info("request elasticsearch returns totalhits -> " + response.getHits().getTotalHits() + " and spend " + (System.currentTimeMillis()-now)/1000.00 + "s");
         return result.build();
     }
 
