@@ -16,7 +16,6 @@ package com.facebook.presto.elasticsearch;
 import com.facebook.presto.spi.ColumnHandle;
 import com.facebook.presto.spi.PrestoException;
 import com.facebook.presto.spi.RecordCursor;
-import com.facebook.presto.spi.SystemTable;
 import com.facebook.presto.spi.predicate.TupleDomain;
 import com.facebook.presto.spi.type.Type;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +27,6 @@ import io.airlift.slice.Slice;
 import io.airlift.units.Duration;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,7 +36,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import static com.facebook.presto.elasticsearch.ElasticsearchErrorCode.ELASTIC_SEARCH_EXCEEDS_MAX_HIT_ERROR;
 import static com.facebook.presto.elasticsearch.ElasticsearchErrorCode.ELASTIC_SEARCH_JSON_PROCESSING_ERROR;
 import static com.facebook.presto.elasticsearch.ElasticsearchUtils.serializeObject;
@@ -185,7 +182,6 @@ public class ElasticsearchRecordCursor
 
     private List<SearchHit> sendElasticQuery(ElasticsearchQueryBuilder queryBuilder)
     {
-
         long now = System.currentTimeMillis();
         ImmutableList.Builder<SearchHit> result = ImmutableList.builder();
         SearchResponse response = queryBuilder.buildScrollSearchRequest().execute().actionGet(timeout.toMillis());

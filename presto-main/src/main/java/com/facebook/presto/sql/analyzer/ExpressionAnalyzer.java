@@ -93,10 +93,12 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
+import io.airlift.log.Logger;
 import io.airlift.slice.SliceUtf8;
 
 import javax.annotation.Nullable;
 
+import java.time.format.DecimalStyle;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -158,6 +160,8 @@ import static java.util.Objects.requireNonNull;
 
 public class ExpressionAnalyzer
 {
+    private static final Logger log = Logger.get(ExpressionAnalyzer.class);
+
     private static final int MAX_NUMBER_GROUPING_ARGUMENTS_BIGINT = 63;
     private static final int MAX_NUMBER_GROUPING_ARGUMENTS_INTEGER = 31;
 
@@ -477,9 +481,8 @@ public class ExpressionAnalyzer
 
             Type left = process(node.getLeft(),context);
             Type right = process(node.getRight(),context);
-
-            if (left.getClass() != right.getClass() && (TypeUtils.isNumeric(left) || TypeUtils.isNumeric(right))){
-
+            if (left.getClass() != right.getClass() &&
+                    (left instanceof VarcharType || right instanceof VarcharType)){
                 Cast cast ;
                 if (TypeUtils.order(left) < TypeUtils.order(right)){
                     cast = new Cast(node.getLeft(), right.getDisplayName());
@@ -489,8 +492,7 @@ public class ExpressionAnalyzer
                     node.setRight(cast);
                 }
 
-                process(cast, context);
-
+                log.warn("has implicit conversions," + node.toString());
             }
 
             return getOperator(context, node, operatorType, node.getLeft(), node.getRight());

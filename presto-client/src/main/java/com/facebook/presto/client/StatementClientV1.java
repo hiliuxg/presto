@@ -113,6 +113,8 @@ class StatementClientV1
 
     public StatementClientV1(OkHttpClient httpClient, ClientSession session, String query)
     {
+        long start = System.currentTimeMillis();
+
         requireNonNull(httpClient, "httpClient is null");
         requireNonNull(session, "session is null");
         requireNonNull(query, "query is null");
@@ -132,7 +134,18 @@ class StatementClientV1
             throw requestFailedException("starting query", request, response);
         }
 
+        QueryResults results = response.getValue() ;
+
+        results.getData().forEach(objects -> objects.forEach(item->{
+            System.out.println("->" + item);
+        }));
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("spend ->" + (end - start));
+
         processResponse(response.getHeaders(), response.getValue());
+
     }
 
     private Request buildQueryRequest(ClientSession session, String query)

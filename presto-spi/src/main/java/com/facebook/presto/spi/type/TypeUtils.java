@@ -142,14 +142,11 @@ public final class TypeUtils
         else if (type instanceof BigintType) { // 64-bit
             return 4;
         }
-        else if (type instanceof RealType) { // 64-bit
+        else if (type instanceof RealType) { // float 32-bit
             return 5;
         }
         else if (type instanceof DoubleType) { // float 64-bit
             return 6;
-        }
-        else if (type instanceof DecimalType) { // decimal
-            return 7;
         }
         else if (type instanceof VarcharType) { //
             return 8;
