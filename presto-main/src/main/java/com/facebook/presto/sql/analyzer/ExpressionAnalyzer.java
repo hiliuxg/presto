@@ -481,17 +481,13 @@ public class ExpressionAnalyzer
 
             Type left = process(node.getLeft(),context);
             Type right = process(node.getRight(),context);
-            if (left.getClass() != right.getClass() &&
-                    (left instanceof VarcharType || right instanceof VarcharType)){
-                Cast cast ;
-                if (TypeUtils.order(left) < TypeUtils.order(right)){
-                    cast = new Cast(node.getLeft(), right.getDisplayName());
-                    node.setLeft(cast);
-                }else{
-                    cast = new Cast(node.getRight(), left.getDisplayName());
-                    node.setRight(cast);
-                }
 
+            //only varchar and nnumeric comparison need to cast
+            if (((left instanceof VarcharType && TypeUtils.isNumeric(right))
+                    || (right instanceof VarcharType && TypeUtils.isNumeric(left))))
+            {
+                node.setLeft(new Cast(node.getLeft(), "double"));
+                node.setRight(new Cast(node.getRight(), "double"));
                 log.warn("has implicit conversions," + node.toString());
             }
 
