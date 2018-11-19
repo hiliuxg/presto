@@ -154,7 +154,7 @@ public final class VarcharOperators
         }
         catch (Exception e) {
             throw new PrestoException(INVALID_CAST_ARGUMENT, format("Cannot cast '%s' to double,may be it caused by an abnormal type conversion," +
-                    "see cloumn types around comparison expression?", slice.toStringUtf8()));
+                    "see cloumn types around comparison expression in your sql ?", slice.toStringUtf8()));
         }
     }
 

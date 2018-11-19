@@ -147,6 +147,8 @@ public final class TypeUtils
         }
         else if (type instanceof DoubleType) { // float 64-bit
             return 6;
+        } else if (type instanceof DecimalType) { // decimal 64-bit
+            return 7;
         }
         else if (type instanceof VarcharType) { //
             return 8;

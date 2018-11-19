@@ -1,0 +1,46 @@
+{
+  "tableName": "dw_fx_user_consume",
+  "schemaName": "fx_es",
+  "hostAddress": "10.16.6.189",
+  "port": "9300",
+  "clusterName": "barneyye-cluster",
+  "index": "fx_post_event_a_partition_1",
+  "type": "doc",
+  "columns": [
+    {
+      "name": "coin",
+      "type": "double",
+      "jsonPath": "coin",
+      "jsonType": "double",
+      "ordinalPosition": "0"
+    },
+    {
+      "name": "userid",
+      "type": "integer",
+      "jsonPath": "userid",
+      "jsonType": "integer",
+      "ordinalPosition": "1"
+    },
+    {
+      "name": "money",
+      "type": "double",
+      "jsonPath": "money",
+      "jsonType": "double",
+      "ordinalPosition": "2"
+    },
+    {
+      "name": "consumeid",
+      "type": "varchar",
+      "jsonPath": "consumeid",
+      "jsonType": "varchar",
+      "ordinalPosition": "3"
+    },
+    {
+      "name": "partition",
+      "type": "integer",
+      "jsonPath": "partition",
+      "jsonType": "integer",
+      "ordinalPosition": "4"
+    }
+  ]
+}
